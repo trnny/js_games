@@ -1,0 +1,8 @@
+bgc : #f2f3f5;
+qpsbgc : #0188fb;
+syibgc : #d2d3d4;
+
+highgt : 106px;
+higmrg : 26px;
+
+llspace : 10px;
