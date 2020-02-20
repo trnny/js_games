@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Soduku</title>
+<style>
+*{
+	position:relative;
+	margin:0px;
+	padding:0px;
+}
+body {
+	width:100vw;
+	height:100vh;
+}
+#mainbox {
+	width:558px;
+	height:558px;
+	left:50%;
+	top:50%;
+	margin:-279px -279px;
+}
+.sobox {
+	width:60px;
+	height:60px;
+	line-height:60px;
+	text-align:center;
+	border:thin solid #000;
+	font-size:28px;
+	font-weight:600;
+	float:left;
+	color:#ffa500;
+}
+.btn{
+	width:80px;
+	height:50px;
+	background-color:#00bfff;
+	border:none;
+	cursor:pointer;
+	top:5px;
+	font-size:20px;
+	font-weight:500;
+}
+#progressbox {
+	width:200px;
+	height:100%;
+	float:left;
+	clear:both;
+	font-size:12px;
+	opacity:0.8;
+	overflow:scroll;
+	position:fixed;
+	background-color:#111;
+	color:#fff;
+}
+#progressbox::-webkit-scrollbar{
+    width: 8px;
+    height: 8px;
+    background-color: #f5f5f5;
+}
+#progressbox::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    border-radius: 4px;
+    background-color: #f5f5f5;
+}
+#progressbox::-webkit-scrollbar-thumb{
+    /*width: 10px;*/
+    height: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+#progressbox .find {
+	font-size:13px;
+	font-weight:400;
+	line-height:18px;
+	color:#00ff7f;
+}
+#progressbox .error {
+	font-size:14px;
+	font-weight:400;
+	color:#ff4500;
+}
+#progressbox .attempt {
+	font-size:16px;
+	line-height:24px;
+	color:#daa520;
+}
+</style>
+<script src="dom.js"></script>
+</head>
+<body>
+	<div id="mainbox">
+		<form>
+			<input type="text" id="b_1_1" class="sobox">
+			<input type="text" id="b_1_2" class="sobox">
+			<input type="text" id="b_1_3" class="sobox">
+			<input type="text" id="b_1_4" class="sobox">
+			<input type="text" id="b_1_5" class="sobox">
+			<input type="text" id="b_1_6" class="sobox">
+			<input type="text" id="b_1_7" class="sobox">
+			<input type="text" id="b_1_8" class="sobox">
+			<input type="text" id="b_1_9" class="sobox">
+			<input type="text" id="b_2_1" class="sobox">
+			<input type="text" id="b_2_2" class="sobox">
+			<input type="text" id="b_2_3" class="sobox">
+			<input type="text" id="b_2_4" class="sobox">
+			<input type="text" id="b_2_5" class="sobox">
+			<input type="text" id="b_2_6" class="sobox">
+			<input type="text" id="b_2_7" class="sobox">
+			<input type="text" id="b_2_8" class="sobox">
+			<input type="text" id="b_2_9" class="sobox">
+			<input type="text" id="b_3_1" class="sobox">
+			<input type="text" id="b_3_2" class="sobox">
+			<input type="text" id="b_3_3" class="sobox">
+			<input type="text" id="b_3_4" class="sobox">
+			<input type="text" id="b_3_5" class="sobox">
+			<input type="text" id="b_3_6" class="sobox">
+			<input type="text" id="b_3_7" class="sobox">
+			<input type="text" id="b_3_8" class="sobox">
+			<input type="text" id="b_3_9" class="sobox">
+			<input type="text" id="b_4_1" class="sobox">
+			<input type="text" id="b_4_2" class="sobox">
+			<input type="text" id="b_4_3" class="sobox">
+			<input type="text" id="b_4_4" class="sobox">
+			<input type="text" id="b_4_5" class="sobox">
+			<input type="text" id="b_4_6" class="sobox">
+			<input type="text" id="b_4_7" class="sobox">
+			<input type="text" id="b_4_8" class="sobox">
+			<input type="text" id="b_4_9" class="sobox">
+			<input type="text" id="b_5_1" class="sobox">
+			<input type="text" id="b_5_2" class="sobox">
+			<input type="text" id="b_5_3" class="sobox">
+			<input type="text" id="b_5_4" class="sobox">
+			<input type="text" id="b_5_5" class="sobox">
+			<input type="text" id="b_5_6" class="sobox">
+			<input type="text" id="b_5_7" class="sobox">
+			<input type="text" id="b_5_8" class="sobox">
+			<input type="text" id="b_5_9" class="sobox">
+			<input type="text" id="b_6_1" class="sobox">
+			<input type="text" id="b_6_2" class="sobox">
+			<input type="text" id="b_6_3" class="sobox">
+			<input type="text" id="b_6_4" class="sobox">
+			<input type="text" id="b_6_5" class="sobox">
+			<input type="text" id="b_6_6" class="sobox">
+			<input type="text" id="b_6_7" class="sobox">
+			<input type="text" id="b_6_8" class="sobox">
+			<input type="text" id="b_6_9" class="sobox">
+			<input type="text" id="b_7_1" class="sobox">
+			<input type="text" id="b_7_2" class="sobox">
+			<input type="text" id="b_7_3" class="sobox">
+			<input type="text" id="b_7_4" class="sobox">
+			<input type="text" id="b_7_5" class="sobox">
+			<input type="text" id="b_7_6" class="sobox">
+			<input type="text" id="b_7_7" class="sobox">
+			<input type="text" id="b_7_8" class="sobox">
+			<input type="text" id="b_7_9" class="sobox">
+			<input type="text" id="b_8_1" class="sobox">
+			<input type="text" id="b_8_2" class="sobox">
+			<input type="text" id="b_8_3" class="sobox">
+			<input type="text" id="b_8_4" class="sobox">
+			<input type="text" id="b_8_5" class="sobox">
+			<input type="text" id="b_8_6" class="sobox">
+			<input type="text" id="b_8_7" class="sobox">
+			<input type="text" id="b_8_8" class="sobox">
+			<input type="text" id="b_8_9" class="sobox">
+			<input type="text" id="b_9_1" class="sobox">
+			<input type="text" id="b_9_2" class="sobox">
+			<input type="text" id="b_9_3" class="sobox">
+			<input type="text" id="b_9_4" class="sobox">
+			<input type="text" id="b_9_5" class="sobox">
+			<input type="text" id="b_9_6" class="sobox">
+			<input type="text" id="b_9_7" class="sobox">
+			<input type="text" id="b_9_8" class="sobox">
+			<input type="text" id="b_9_9" class="sobox">
+		</form>
+	</div>
+	<div id="progressbox">
+	</div>
+	<input type="button" class="btn" value="attempt" onclick="attempt()">
+	<input type="button" class="btn" value="inspect" onclick="alert(inspect());">
+	<input type="button" class="btn" value="clean" onclick="clean()">
+	<input type="button" class="btn" value="prevous" onclick="prevlev()">
+	<input type="button" class="btn" value="next" onclick="nextlev()">
+</body>
+
+</html>
