@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="icon" type="image/png" sizes="32x32" href="app_icon.png">
+<title>Calculater Game</title>
+<style type="text/css">
+*{margin:0px;padding:0px;position:relative;}
+body{
+	width:100vw;
+	height:100vh;
+}
+#main_window{
+	width:450px;
+	height:800px;
+	background-color:#fffaf6;
+	left:50%;
+	top:50%;
+	margin:-400px -225px;
+	display:none;
+}
+#screen_block{
+	width:410px;
+	margin:0px 20px;
+	height:320px;
+	border-radius:10px;
+	background-color:#3f3f3f;
+	top:20px;
+}
+#screen_block em{
+	color:#fff;
+	margin:0px 30px;
+	top:10px;
+	font-size:26px;
+	font-weight:600;
+	line-height:26px;
+}
+#screen_display{
+	width:350px;
+	height:230px;
+	background-color:rgb(228, 243, 243);
+	border-radius:10px;
+	margin:30px;
+	box-shadow: 0px 5px -3px rgb(178, 193, 193);
+}
+#face_ico{
+	width:80px;
+	height:40px;
+	margin:15px 25px;
+	float:left;
+}
+.count_block{
+	width:95px;
+	height:40px;
+	float:right;
+	margin:15px 10px 15px 5px;
+	background-color:#333;
+	color:rgb(228, 243, 243);
+	text-align:center;
+	border-radius:3px;
+	line-height:40px;
+}
+#button_block{
+	width:450px;
+	height:320px;
+	top:50px;
+	border-collapse:separate;
+	border-spacing: 20px;
+}
+#certain{
+	top:40px;
+	font-size:56px;
+	font-weight:600;
+	float:right;
+	right:5px;
+	letter-spacing: 10px;
+}
+.btn{
+	background-color:#dcdcdc;
+	border-radius:6px;
+	width:100px;
+	height:70px;
+	color:#fff;
+	font-size:30px;
+	font-weight:600;
+	text-align:center;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
+	cursor:pointer;
+	box-shadow:0px 5px 3px #dfdfdf;
+}
+.clr{
+	background-color:#f31111;
+	box-shadow:0px 8px 0px #dc1515;
+}
+.clr:active{
+	box-shadow:0px 5px 0px #dc1515;
+	top:1px;
+}
+.win{
+	background-color:#00ff00;
+	box-shadow:0px 8px 0px #32cd32;
+}
+.win:active{
+	box-shadow:0px 5px 0px #32cd32;
+	top:1px;
+}
+.set{
+	background-color:#f2f212;
+	box-shadow:0px 8px 0px #d5d523;
+}
+.set:active{
+	box-shadow:0px 5px 0px #d5d523;
+	top:1px;
+}
+.hin{
+	background-color:#00bfff;
+	box-shadow:0px 8px 0px #00c8fc;
+}
+.hin:active{
+	box-shadow:0px 5px 0px #00c8fc;
+	top:1px;
+}
+.bac{
+	background-color:#ffa500;
+	box-shadow:0px 8px 0px #f5a000;
+}
+.bac:active{  /*橙色*/
+	box-shadow:0px 5px 0px #f5a000;
+	top:1px;
+}
+.csn{  /*运算符*/
+	background-color:#464646;
+	box-shadow:0px 8px 0px #3d3d3d;
+	letter-spacing: 2px;
+}
+.csn:active{
+	box-shadow:0px 5px 0px #3d3d3d;
+	top:1px;
+}
+.sgn{  /*单数字*/
+	background-color:#9932cc;
+	box-shadow:0px 8px 0px #9400d3;
+}
+.sgn:active{
+	box-shadow:0px 5px 0px #9400d3;
+	top:1px;
+}
+.swb{
+	background-color:#fff;
+	box-shadow:0px 8px 0px #ddd;
+	color:#555;
+}
+.swb:active{
+	box-shadow:0px 5px 0px #ddd;
+	top:1px;
+}
+.sbb{
+	background-color:#4169e1;
+	box-shadow:0px 8px 0px #00008b;
+}
+.sbb:active{
+	box-shadow:0px 5px 0px #00008b;
+	top:1px;
+}
+#cookietest {
+	text-indent:2em;
+	right:10px;
+	top:10px;
+	position:fixed;
+	z-index : 10000;
+}
+#login {
+}
+#c_b {
+	position:fixed;
+	top:20px;
+	left:20px;
+	width:50px;
+	height:50px;
+	line-height:50px;
+	border-radius:25px;
+	text-align:center;
+	background:#7fffd4;
+	color:#00bfff;
+	box-shadow:0px 3px 1px rgb(102,205,170);
+	z-index:100000;
+	display:none;
+}
+</style>
+</head>
+<body>
+<div id="login">
+	<label for="c_name">敢问尊姓大名？<input id="c_name" type="text" onkeydown="c_enter(event)"></label>
+	<input type="button" onclick="c_login()" value="开始">
+</div>
+<div id="c_b" onclick="c_logout()">
+	<h2 id="c_u"></h2>
+</div>
+<div id="main_window">
+	<div id="screen_block">
+	<em id="level"></em>
+		<div id="screen_display">
+			<div id="face_ico"></div>
+			<div class="count_block" id="GOAL"></div>
+			<div class="count_block" id="MOVES"></div>
+			<div id="certain"></div>
+		</div>
+	</div>
+	<table id="button_block" onmousedown="calculater(event);">
+		<tr>
+			<td class="btn"></td>
+			<td class="btn"></td>
+			<td class="btn"></td>
+		</tr>
+		<tr>
+			<td class="btn"></td>
+			<td class="btn"></td>
+			<td class="btn"></td>
+		</tr>
+		<tr>
+			<td class="btn"></td>
+			<td class="btn"></td>
+			<td class="btn"></td>
+		</tr>
+	</table>
+</div>
+</body>
+<script>
+var u_name;  //当前玩家
+var lev = 1;  //当前等级
+var u_lev_max;  //玩家最大等级
+var g_lev_max = 113  //游戏最大等级
+var setting = true;  //设置模式
+var config = {"debug":"on"};  //配置参数
+var moves;  //剩余步数
+var orgbtn = ["<<","x²","x³","+/-","Reverse","SUM","Shift>","<Shift"];
+
+var Level_Parameter = new Array();  //游戏等级配置
+Level_Parameter[0] = {"certain":"TEST"};  //,"2,2":""
+Level_Parameter[1] = {"MOVES":2,"GOAL":2,"certain":0,"btn":{"1,2":"+1"}};
+Level_Parameter[2] = {"MOVES":3,"GOAL":8,"certain":0,"btn":{"1,2":"+2","2,2":"+3"}};
+Level_Parameter[3] = {"MOVES":3,"GOAL":12,"certain":0,"btn":{"1,2":"x4","2,2":"+1","3,2":"+2"}};
+Level_Parameter[4] = {"MOVES":3,"GOAL":7,"certain":1,"btn":{"1,2":"+4","2,2":"-2"}};
+Level_Parameter[5] = {"MOVES":3,"GOAL":4,"certain":3,"btn":{"1,1":"BUY HINTS","1,2":"+4","2,2":"x4","3,2":"/4"}};
+Level_Parameter[6] = {"MOVES":4,"GOAL":64,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+2","2,2":"x4"}};
+Level_Parameter[7] = {"MOVES":3,"GOAL":5,"certain":4,"btn":{"1,1":"BUY HINTS","1,2":"/3","2,2":"+3","3,2":"x3"}};
+Level_Parameter[8] = {"MOVES":3,"GOAL":4,"certain":4321,"btn":{"1,1":"BUY HINTS","2,3":"<<"}};
+Level_Parameter[9] = {"MOVES":3,"GOAL":4,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"8","2,2":"x5","2,3":"<<"}};
+Level_Parameter[10] = {"MOVES":4,"GOAL":9,"certain":50,"btn":{"1,1":"BUY HINTS","1,2":"/5","2,2":"x3","2,3":"<<"}};
+Level_Parameter[11] = {"MOVES":3,"GOAL":100,"certain":99,"btn":{"1,1":"BUY HINTS","1,2":"-8","2,2":"x11","2,3":"<<"}};
+Level_Parameter[12] = {"MOVES":5,"GOAL":404,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+8","2,2":"x10","3,2":"/2"}};
+Level_Parameter[13] = {"MOVES":4,"GOAL":23,"certain":171,"btn":{"1,1":"BUY HINTS","1,2":"x2","2,2":"-9","2,3":"<<"}};
+Level_Parameter[14] = {"MOVES":5,"GOAL":21,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+5","2,2":"x3","2,3":"<<","3,2":"x5"}};
+Level_Parameter[15] = {"MOVES":3,"GOAL":50,"certain":10,"btn":{"1,1":"BUY HINTS","1,2":"x3","2,2":"x2","3,2":"-5"}};
+Level_Parameter[16] = {"MOVES":5,"GOAL":2,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+4","2,2":"x9","2,3":"<<"}};
+Level_Parameter[17] = {"MOVES":2,"GOAL":11,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1"}};
+Level_Parameter[18] = {"MOVES":3,"GOAL":101,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"0"}};
+Level_Parameter[19] = {"MOVES":3,"GOAL":44,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"2","2,2":"x2"}};
+Level_Parameter[20] = {"MOVES":2,"GOAL":35,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+3","2,2":"5"}};
+Level_Parameter[21] = {"MOVES":3,"GOAL":56,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"+5"}};
+Level_Parameter[22] = {"MOVES":4,"GOAL":9,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+2","2,2":"/3","3,2":"1"}};
+Level_Parameter[23] = {"MOVES":4,"GOAL":10,"certain":15,"btn":{"1,1":"BUY HINTS","1,2":"0","2,2":"+2","3,2":"/5"}};
+Level_Parameter[24] = {"MOVES":5,"GOAL":210,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"-5","2,2":"+5","2,3":"2","3,2":"5"}};
+Level_Parameter[25] = {"MOVES":4,"GOAL":2020,"certain":40,"btn":{"1,1":"BUY HINTS","1,2":"0","2,2":"+4","3,2":"/2"}};
+Level_Parameter[26] = {"MOVES":4,"GOAL":11,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"12","2,3":"<<"}};
+Level_Parameter[27] = {"MOVES":4,"GOAL":102,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"10","2,2":"+1","2,3":"<<"}};
+Level_Parameter[28] = {"MOVES":4,"GOAL":222,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1","2,3":"1=>2"}};
+Level_Parameter[29] = {"MOVES":4,"GOAL":93,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+6","2,2":"x7","2,3":"6=>9"}};
+Level_Parameter[30] = {"MOVES":6,"GOAL":2321,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"2","2,3":"1=>2","3,3":"2=>3"}};
+Level_Parameter[31] = {"MOVES":5,"GOAL":24,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+9","2,2":"x2","2,3":"8=>4"}};
+Level_Parameter[32] = {"MOVES":5,"GOAL":29,"certain":11,"btn":{"1,1":"BUY HINTS","1,2":"/2","2,2":"+3","2,3":"1=>2","2,3":"2=>9"}};
+Level_Parameter[33] = {"MOVES":5,"GOAL":20,"certain":36,"btn":{"1,1":"BUY HINTS","1,2":"+3","2,2":"/3","2,3":"1=>2"}};
+Level_Parameter[34] = {"MOVES":4,"GOAL":15,"certain":2,"btn":{"1,1":"BUY HINTS","1,2":"/3","2,2":"1","2,3":"4=>5","3,2":"x2"}};
+Level_Parameter[35] = {"MOVES":4,"GOAL":414,"certain":1234,"btn":{"1,1":"BUY HINTS","1,2":"23=>41","2,2":"24=>14","2,3":"12=>24","3,3":"14=>2"}};
+Level_Parameter[36] = {"MOVES":4,"GOAL":-85,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+6","2,2":"5","3,2":"-7"}};
+Level_Parameter[37] = {"MOVES":3,"GOAL":9,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"-1","2,2":"-2","2,3":"x²"}};
+Level_Parameter[38] = {"MOVES":4,"GOAL":-120,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"x5","2,2":"-6","3,2":"4"}};
+Level_Parameter[39] = {"MOVES":3,"GOAL":144,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"-1","2,2":"2","2,3":"x²"}}; 
+Level_Parameter[40] = {"MOVES":1,"GOAL":5,"certain":-5,"btn":{"1,1":"BUY HINTS","2,3":"+/-"}};
+Level_Parameter[41] = {"MOVES":3,"GOAL":-6,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+4","2,2":"+2","2,3":"+/-"}};
+Level_Parameter[42] = {"MOVES":4,"GOAL":-13,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+3","2,2":"-7","2,3":"+/-"}};
+Level_Parameter[43] = {"MOVES":4,"GOAL":60,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+5","2,2":"-10","2,3":"+/-","3,2":"x4"}};
+Level_Parameter[44] = {"MOVES":5,"GOAL":52,"certain":44,"btn":{"1,1":"BUY HINTS","1,2":"+9","2,2":"/2","2,3":"+/-","3,2":"x4"}};
+Level_Parameter[45] = {"MOVES":5,"GOAL":10,"certain":9,"btn":{"1,1":"BUY HINTS","1,2":"+5","2,2":"x5","2,3":"+/-"}};
+Level_Parameter[46] = {"MOVES":5,"GOAL":12,"certain":14,"btn":{"1,1":"BUY HINTS","1,2":"6","2,2":"+5","2,3":"+/-","3,2":"/8"}};
+Level_Parameter[47] = {"MOVES":4,"GOAL":13,"certain":55,"btn":{"1,1":"BUY HINTS","1,2":"+9","2,3":"+/-","3,3":"<<"}};
+Level_Parameter[48] = {"MOVES":5,"GOAL":245,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"-3","2,2":"5","2,3":"+/-","3,2":"x4"}};
+Level_Parameter[49] = {"MOVES":4,"GOAL":12,"certain":39,"btn":{"1,1":"BUY HINTS","1,2":"x-3","2,2":"/3","2,3":"+/-","3,2":"+9"}};
+Level_Parameter[50] = {"MOVES":6,"GOAL":126,"certain":111,"btn":{"1,1":"BUY HINTS","1,2":"x3","2,2":"-9","2,3":"+/-","3,3":"<<"}};
+Level_Parameter[51] = {"MOVES":5,"GOAL":3,"certain":34,"btn":{"1,1":"BUY HINTS","1,2":"-5","2,2":"+8","2,3":"+/-","3,2":"/7"}};
+Level_Parameter[52] = {"MOVES":5,"GOAL":4,"certain":25,"btn":{"1,1":"BUY HINTS","1,2":"-4","2,2":"x-4","2,3":"+/-","3,2":"/3","3,3":"/8"}};
+Level_Parameter[53] = {"MOVES":1,"GOAL":21,"certain":12,"btn":{"1,1":"BUY HINTS","2,3":"Reverse"}};
+Level_Parameter[54] = {"MOVES":3,"GOAL":51,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+6","2,2":"+9","2,3":"Reverse"}};
+Level_Parameter[55] = {"MOVES":3,"GOAL":101,"certain":100,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"+9","2,3":"Reverse"}};
+Level_Parameter[56] = {"MOVES":4,"GOAL":100,"certain":1101,"btn":{"1,1":"BUY HINTS","1,2":"-1","2,3":"Reverse"}};
+Level_Parameter[57] = {"MOVES":4,"GOAL":58,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+4","2,2":"x4","2,3":"Reverse","3,2":"-3"}};
+Level_Parameter[58] = {"MOVES":3,"GOAL":4,"certain":6,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"/4","2,3":"Reverse"}};
+Level_Parameter[59] = {"MOVES":3,"GOAL":21,"certain":15,"btn":{"1,1":"BUY HINTS","1,2":"+9","2,2":"x5","2,2":"Reverse"}};
+Level_Parameter[60] = {"MOVES":5,"GOAL":13,"certain":100,"btn":{"1,1":"BUY HINTS","1,2":"/2","2,3":"Reverse"}};
+Level_Parameter[61] = {"MOVES":4,"GOAL":11011,"certain":10,"btn":{"1,1":"BUY HINTS","1,2":"1","2,3":"Reverse"}};
+Level_Parameter[62] = {"MOVES":4,"GOAL":102,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"10","2,2":"x4","2,3":"Reverse","3,2":"+5"}};
+Level_Parameter[63] = {"MOVES":4,"GOAL":7,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"2","2,2":"+1","2,3":"Reverse","3,2":"/3"}};
+Level_Parameter[64] = {"MOVES":4,"GOAL":4,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"5","2,2":"x4","2,3":"Reverse","3,2":"x2"}};
+Level_Parameter[65] = {"MOVES":3,"GOAL":212,"certain":121,"btn":{"1,1":"BUY HINTS","1,2":"2","2,2":"-1","2,3":"Reverse"}};
+Level_Parameter[66] = {"MOVES":5,"GOAL":9,"certain":8,"btn":{"1,1":"BUY HINTS","1,2":"x3","2,2":"1","2,3":"Reverse","3,2":"/5"}};
+Level_Parameter[67] = {"MOVES":5,"GOAL":13,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+7","2,2":"+8","2,3":"Reverse","3,2":"+9"}};
+Level_Parameter[68] = {"MOVES":6,"GOAL":123,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+3","2,2":"1","2,3":"Reverse","3,2":"-2"}};
+Level_Parameter[69] = {"MOVES":5,"GOAL":424,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"6","2,2":"+8","2,3":"Reverse"}};
+Level_Parameter[70] = {"MOVES":5,"GOAL":81,"certain":7,"btn":{"1,1":"BUY HINTS","1,2":"-9","2,2":"x3","2,3":"+/-","3,2":"+4","3,3":"Reverse"}};
+Level_Parameter[71] = {"MOVES":5,"GOAL":-43,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"-5","2,2":"+7","2,3":"Reverse","3,2":"-9"}};
+Level_Parameter[72] = {"MOVES":7,"GOAL":28,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+6","2,2":"-3","2,3":"Reverse","3,3":"<<"}};
+Level_Parameter[73] = {"MOVES":5,"GOAL":136,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"+2","2,3":"Reverse","3,2":"x3"}};
+Level_Parameter[74] = {"MOVES":4,"GOAL":-1,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+5","2,3":"Reverse","3,3":"+/-"}};
+Level_Parameter[75] = {"MOVES":5,"GOAL":-25,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+4","2,2":"x3","2,3":"Reverse","3,3":"+/-"}};
+Level_Parameter[76] = {"MOVES":5,"GOAL":-5,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+7","2,2":"x3","2,3":"Reverse","3,3":"+/-"}};
+Level_Parameter[77] = {"MOVES":4,"GOAL":41,"certain":88,"btn":{"1,1":"BUY HINTS","1,2":"/4","2,2":"-4","2,3":"Reverse"}};
+Level_Parameter[78] = {"MOVES":5,"GOAL":101,"certain":100,"btn":{"1,1":"BUY HINTS","1,2":"0","2,2":"x2","2,3":"Reverse","3,2":"2=>10","3,3":"0=>1"}};
+Level_Parameter[79] = {"MOVES":7,"GOAL":424,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"/2","2,2":"5","2,3":"5=>4","3,3":"Reverse"}};
+Level_Parameter[80] = {"MOVES":5,"GOAL":100,"certain":99,"btn":{"1,1":"BUY HINTS","1,2":"9","2,2":"/9","2,3":"Reverse","3,3":"1=>0"}};
+Level_Parameter[81] = {"MOVES":5,"GOAL":30,"certain":8,"btn":{"1,1":"BUY HINTS","1,2":"2","2,2":"-4","2,3":"2=>3","3,3":"Reverse"}};
+Level_Parameter[82] = {"MOVES":5,"GOAL":222,"certain":101,"btn":{"1,1":"BUY HINTS","1,2":"-1","2,3":"Reverse","3,3":"0=>2"}};
+Level_Parameter[83] = {"MOVES":5,"GOAL":500,"certain":36,"btn":{"1,1":"BUY HINTS","1,2":"x4","2,2":"/3","2,3":"1=>5","3,3":"Reverse"}};
+Level_Parameter[84] = {"MOVES":8,"GOAL":196,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"+12","2,3":"Reverse","3,2":"x13","3,3":"<<"}};
+Level_Parameter[85] = {"MOVES":5,"GOAL":101,"certain":50,"btn":{"1,1":"BUY HINTS","1,2":"1=>10","2,2":"+50","2,3":"Reverse","3,3":"5=>1"}};
+Level_Parameter[86] = {"MOVES":6,"GOAL":2048,"certain":1,"btn":{"1,1":"BUY HINTS","1,2":"2","2,2":"x4","2,3":"Reverse","3,2":"x10"}};
+Level_Parameter[87] = {"MOVES":5,"GOAL":123,"certain":12,"btn":{"1,1":"BUY HINTS","1,2":"12","2,2":"+1","2,3":"12=>2","3,3":"Reverse"}};
+Level_Parameter[88] = {"MOVES":6,"GOAL":55,"certain":86,"btn":{"1,1":"BUY HINTS","1,2":"+2","2,2":"+14","2,3":"Reverse","3,3":"0=>5"}};
+Level_Parameter[89] = {"MOVES":4,"GOAL":3,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"1","2,3":"SUM"}};
+Level_Parameter[90] = {"MOVES":3,"GOAL":4,"certain":1231,"btn":{"1,1":"BUY HINTS","1,2":"SUM","2,3":"3=>1","3,3":"2=>3"}};
+Level_Parameter[91] = {"MOVES":5,"GOAL":45,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"x9","2,2":"4","2,3":"3=>5","3,2":"x3","3,3":"SUM"}}; 
+Level_Parameter[92] = {"MOVES":5,"GOAL":28,"certain":424,"btn":{"1,1":"BUY HINTS","1,2":"x4","2,3":"4=>6","3,3":"SUM"}}; 
+Level_Parameter[93] = {"MOVES":4,"GOAL":8,"certain":3,"btn":{"1,1":"BUY HINTS","1,2":"3","2,2":"+33","2,3":"SUM","3,3":"3=>1"}}; 
+Level_Parameter[94] = {"MOVES":4,"GOAL":44,"certain":24,"btn":{"1,1":"BUY HINTS","1,2":"/2","2,2":"4","2,3":"1=>2","3,3":"SUM"}}; 
+Level_Parameter[95] = {"MOVES":4,"GOAL":143,"certain":142,"btn":{"1,1":"BUY HINTS","1,2":"x9","2,2":"+9","2,3":"44=>43","3,3":"SUM"}}; 
+Level_Parameter[96] = {"MOVES":5,"GOAL":1,"certain":24,"btn":{"1,1":"BUY HINTS","1,2":"/3","2,2":"x4","2,3":"5=>10","3,3":"SUM"}}; 
+Level_Parameter[97] = {"MOVES":5,"GOAL":100,"certain":4,"btn":{"1,1":"BUY HINTS","1,2":"3","2,2":"x3","2,3":"SUM","3,2":"+1"}}; 
+Level_Parameter[98] = {"MOVES":5,"GOAL":8,"certain":93,"btn":{"1,1":"BUY HINTS","1,2":"+4","2,2":"x3","2,3":"SUM"}}; 
+Level_Parameter[99] = {"MOVES":5,"GOAL":16,"certain":5,"btn":{"1,1":"BUY HINTS","1,2":"x5","2,2":"/2","2,3":"SUM","3,3":"5=>2"}}; 
+Level_Parameter[100] = {"MOVES":4,"GOAL":64,"certain":128,"btn":{"1,1":"BUY HINTS","1,2":"x4","2,2":"/4","2,3":"SUM","3,3":"5=>16"}}; 
+Level_Parameter[101] = {"MOVES":6,"GOAL":121,"certain":59,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"x5","2,3":"15=>51","3,3":"SUM"}}; 
+Level_Parameter[102] = {"MOVES":6,"GOAL":5,"certain":18,"btn":{"1,1":"BUY HINTS","1,2":"x2","2,2":"/3","2,3":"12=>21","3,3":"SUM"}}; 
+Level_Parameter[103] = {"MOVES":4,"GOAL":30,"certain":9,"btn":{"1,1":"BUY HINTS","1,2":"-5","2,2":"x-6","2,3":"+/-","3,3":"SUM"}}; 
+Level_Parameter[104] = {"MOVES":5,"GOAL":-17,"certain":105,"btn":{"1,1":"BUY HINTS","1,2":"-5","2,2":"/5","2,3":"+/-","3,2":"x4","3,3":"SUM"}}; 
+Level_Parameter[105] = {"MOVES":6,"GOAL":11,"certain":36,"btn":{"1,1":"BUY HINTS","1,2":"-6","2,2":"/3","2,3":"+/-","3,3":"SUM"}}; 
+Level_Parameter[106] = {"MOVES":5,"GOAL":64,"certain":3,"btn":{"1,1":"BUY HINTS","1,2":"+3","2,2":"SUM","2,3":"x³","3,3":"0=>1"}}; 
+Level_Parameter[107] = {"MOVES":5,"GOAL":11,"certain":2,"btn":{"1,1":"BUY HINTS","1,2":"x2","2,2":"10","2,3":"x³","3,2":"SUM","3,3":"10=>1"}}; 
+Level_Parameter[108] = {"MOVES":2,"GOAL":2311,"certain":1123,"btn":{"1,1":"BUY HINTS","2,3":"<Shift"}}; 
+Level_Parameter[109] = {"MOVES":2,"GOAL":3254,"certain":5432,"btn":{"1,1":"BUY HINTS","2,3":"Shift>"}}; 
+Level_Parameter[110] = {"MOVES":3,"GOAL":121,"certain":101,"btn":{"1,1":"BUY HINTS","1,2":"+2","2,3":"Shift>","3,3":"<Shift"}}; 
+Level_Parameter[111] = {"MOVES":4,"GOAL":1999,"certain":98,"btn":{"1,1":"BUY HINTS","1,2":"1","2,2":"9","2,3":"89=>99","3,3":"Shift>"}}; 
+Level_Parameter[112] = {"MOVES":4,"GOAL":129,"certain":70,"btn":{"1,1":"BUY HINTS","1,2":"x3","2,2":"9","2,3":"Shift>"}}; 
+Level_Parameter[113] = {"MOVES":5,"GOAL":210,"certain":120,"btn":{"1,1":"BUY HINTS","1,2":"+1","2,3":"<Shift","3,3":"+/-"}}; 
+//Level_Parameter[11] = {"MOVES":2,"GOAL":2,"certain":0,"btn":{"1,1":"BUY HINTS","1,2":"+1"}}; 
+//,"2,2":""
+
+var load = function(lev){  //(重新)加载level为lev的整个页面
+		reload(lev);
+		load_scr(lev);
+		load_btn(lev);
+}
+
+var load_btn = function(lev){  //加载键区的键
+	var btn = Level_Parameter[lev]["btn"];
+	for(var col in btn){
+		var i,j;
+		i = col.split(",")[0];
+		j = col.split(",")[1];
+		gtbtn(i,j).innerText = btn[col];
+		if(btn[col] == "BUY HINTS")gtbtn(i,j).className = "btn hin";
+		else if(btn[col].isNum())gtbtn(i,j).className = "btn sgn";  //纯数字
+		else if(btn[col].contains("=>") || orgbtn.indexOf(btn[col]) > -1  )gtbtn(i,j).className = "btn bac";  //橙色键
+		else gtbtn(i,j).className = "btn csn";  //带有运算符
+	}
+	gtbtn(1,3).innerText = "CLR";
+	gtbtn(1,3).className = "btn clr";
+	gtbtn(3,1).innerText = "Setting";
+	gtbtn(3,1).className = "btn set";
+}
+
+var load_scr = function(lev){  //加载显示区的参数
+	document.getElementById("level").innerText = "LEVEL:" + lev;
+	document.getElementById("MOVES").innerText = Level_Parameter[lev]["MOVES"] ? "MOVES:" + Level_Parameter[lev]["MOVES"] : "";
+	document.getElementById("GOAL").innerText = Level_Parameter[lev]["GOAL"] ? "GOAL:" + Level_Parameter[lev]["GOAL"] : "";
+	document.getElementById("certain").innerText = Level_Parameter[lev]["certain"];
+}
+
+var reload = function(lev){  //重新加载参数
+	moves = Level_Parameter[lev]["MOVES"];
+	for(var i = 1;i < 4; i++){
+		for(var j = 1;j < 4; j++){
+			gtbtn(i,j).innerText = "";
+			gtbtn(i,j).className = "btn";
+		}
+	}
+	return;
+}
+
+var gtbtn = function(i,j){   //返回坐标对应的btn
+	var o = document.getElementById("button_block").children[0];  //tbody
+	var ln = o.children[i-1];  //tr
+	var col = ln.children[j-1];  //td
+	return col;
+}
+
+var win = function() {  //检查该步后是否满足赢
+	if(document.getElementById("certain").innerText.length > 8){
+		document.getElementById("certain").innerText = "ERROR";
+	}
+	if(moves == 0) {
+		if(document.getElementById("certain").innerText == Level_Parameter[lev]["GOAL"]){  //添加赢动画或效果
+			gtbtn(1,1).innerText = "";
+			gtbtn(1,1).className = "btn";
+			gtbtn(1,3).innerText = "OK";
+			gtbtn(1,3).className = "btn win";
+			document.getElementById("certain").innerText = "YOU WIN";
+			return true;
+		}else{  //添加失败动画或效果
+			document.getElementById("certain").innerText = "FAILURE";
+			return false;
+		}
+	}
+}
+
+var calculater = function(e){  //计算的核心函数
+	e = e||window.event;
+	obj = e.srcElement||e.target
+    var results = obj.innerText;
+	var cer = document.getElementById("certain").innerText;
+	if(results == "CLR") {
+		load(lev);
+		return;
+	}
+	if(results == "Setting") {
+		//添加设置
+		if(setting){
+			setting = false;
+			gtbtn(1,1).innerText = "";
+			gtbtn(1,1).className = "btn swb";  //设置界面白色按钮
+			gtbtn(1,2).innerText = "";
+			gtbtn(1,2).className = "btn swb";
+			gtbtn(1,3).innerText = "";
+			gtbtn(1,3).className = "btn swb";
+			gtbtn(2,1).innerText = "-";
+			gtbtn(2,1).className = "btn sbb";  //设置界面蓝色按钮
+			gtbtn(2,2).innerText = "LEVEL " + lev;
+			gtbtn(2,2).className = "btn csn";
+			gtbtn(2,3).innerText = "+";
+			gtbtn(2,3).className = "btn sbb";
+			gtbtn(3,2).innerText = "BUY HINTS";
+			gtbtn(3,2).className = "btn hin";
+			gtbtn(3,3).innerText = "";
+			gtbtn(3,3).className = "btn";
+		}else{
+			load(lev);
+			setting = true;
+		}
+		return;
+	}
+	if(results == "BUY HINTS") {
+		alert("抱歉，氪金系统还未完成");
+		load(lev);
+		return;
+	}
+	if(cer == "ERROR") {
+		return;
+	}
+	if(results == "OK") {  //添加成功效果
+		if(lev < g_lev_max){
+			lev++;
+			if(lev > u_lev_max){
+        u_lev_max = lev;
+				setGameCookie(u_name,u_lev_max);
+			}
+			load(lev);
+		}else{
+			alert("你通关了，快叫他去添加题目吧");
+		}
+		return;
+	}
+	if(results == "-") {
+		if(lev > 0){
+			lev--;
+			gtbtn(2,2).innerText = "LEVEL " + lev;
+		}
+		return;
+	}
+	if(results == "+") {
+		if(lev < u_lev_max) {
+			lev++;
+			gtbtn(2,2).innerText = "LEVEL " + lev;
+		}
+		return;
+	}
+	if(moves < 1 || results == ""){  //计步器，计步器之前事件不消耗步数
+		return;
+	}else{
+		moves--;
+		document.getElementById("MOVES").innerText = "MOVES:" + moves;
+	}
+	if(results.isNum()) {
+		document.getElementById("certain").innerText = (cer + results) * 1;
+		win();
+		return;
+	}
+	if(results == "SUM") {
+		if(cer.contains(".")){
+			document.getElementById("certain").innerText = "ERROR";
+			return;
+		}
+		var tep = 0;
+		if(cer[0] == "-") {
+			for(var i = 1;i < cer.length;i++){
+				tep += cer[i] * 1
+			}
+			tep = tep * -1;
+		}
+		else{
+			for(var i = 0;i < cer.length;i++){
+				tep += cer[i] * 1
+			}
+		}
+		document.getElementById("certain").innerText = tep;
+		win();
+		return ;
+	}
+	if(results == "x²"){
+		document.getElementById("certain").innerText *= cer;
+		win();
+		return;
+	}
+	if(results == "x³"){
+		document.getElementById("certain").innerText *= cer*cer;
+		win();
+		return;
+	}
+	if(results == "<Shift"){
+    document.getElementById("certain").innerText = (cer.substring(1,cer.length) + cer[0]) * 1;
+    win();
+    return;
+	}
+	if(results == "Shift>"){
+    document.getElementById("certain").innerText = (cer[cer.length - 1] + cer.substring(0,cer.length - 1)) * 1;
+    win();
+    return;
+	}
+	if(results.contains("=>")){
+		var fn = results.split("=>")[0];
+		var ln = results.split("=>")[1];
+		while(cer.contains(fn)){
+			cer = cer.replace(fn,ln);
+		}
+		document.getElementById("certain").innerText = cer;
+		win();
+		return;
+	}
+	if(results == "+/-"){
+		document.getElementById("certain").innerText = 0 - cer * 1;
+		win();
+		return;
+	}
+	if(results == "Reverse"){
+		if(cer[0] != "-"){
+			document.getElementById("certain").innerText = cer.split("").reverse().join("") * 1;
+		}else{
+			var tep = cer.substring(1,cer.length);
+			document.getElementById("certain").innerText = "-" + tep.split("").reverse().join("") * 1;
+		}
+		win();
+		return;
+	}
+	if(results == "<<") {
+		if(cer.length > 1){
+			document.getElementById("certain").innerText = cer.substring(0,cer.length - 1);
+		}
+		if((cer.length <= 2 && cer[0] == "-") || cer.length < 2){
+			document.getElementById("certain").innerText = 0;
+		}
+		if(cer.contains(".")){
+			document.getElementById("certain").innerText = "ERROR";
+		}
+		win();
+		return;
+	}
+	if("+/-".contains(results[0]) && results != "+/-") {
+		document.getElementById("certain").innerText = eval(cer + results);
+		win();
+		return;
+	}
+	if(results[0] == "x") {
+		document.getElementById("certain").innerText = eval(cer + "*" +results.substring(1,results.length));
+		win();
+		return;
+	}
+}
+
+if (!Array.prototype.indexOf) {  //访问下标
+    Array.prototype.indexOf = function(obj, start) {
+         for (var i = (start || 0), j = this.length; i < j; i++) {
+             if (this[i] === obj) { return i; }
+         }
+         return -1;
+    }
+};
+
+if (!Array.prototype.contains) {  //检查数组是否包含字符串
+    Array.prototype.contains = function (obj) { 
+        var index = this.length; 
+        while (index--) { 
+            if (this[index] === obj) { 
+                return true; 
+            } 
+        } 
+            return false; 
+    }
+};
+  
+if (!String.prototype.contains) {  //检查字符串包含子串
+    String.prototype.contains = function (arg) {
+        return !!~this.indexOf(arg);
+    };
+};
+
+if (!String.prototype.isNum) {  //检查是否为纯数字
+	String.prototype.isNum = function() {
+		return /^\d+$/.test(this);
+	};
+};
+
+var c_enter = function(e){
+	keynum = window.event ? e.keyCode : e.which;
+	if(keynum == 13){
+		c_login();
+	}
+};
+
+var c_login = function(){
+	var name = document.getElementById("c_name").value;
+	if(name == ""){
+		alert("请输入名字，八嘎！");
+		return;
+	}else{
+		setGameCookie(name);
+		document.getElementById("login").style.display = "none";
+		var get = getGameCookie();
+		if(get){
+			u_name = get["name"];
+			lev = get["level"];
+			u_lev_max = get["level"];
+			load(lev);
+			document.getElementById("main_window").style.display = "block";
+			document.getElementById("c_u").innerText = u_name[0];
+			document.getElementById("c_b").style.display = "block";
+		}else{
+			alert("sorry,未知bug,登录不了");
+		}
+	}
+}
+
+var c_logout = function(){
+	delGameCookie(u_name);
+	window.location=location;
+}
+
+var setGameCookie = function(n,l){  //名和等级用下划线隔开 只能一个玩家登录 可以考虑多玩家： “名=级”
+	var name = n ? n : "Unkown";
+	var level = l ? l : "1";
+	var date=new Date();
+	var expireDays=7;  //cookie储存7天
+	date.setTime(date.getTime()+expireDays*24*3600*1000);
+	var set = "User=" + escape(name) + "_" + level + ";expires=" + date.toGMTString();
+	document.cookie = set;
+	console.log("cookie : " + unescape(document.cookie));
+}
+
+var delGameCookie = function(name){
+	if(!name){
+		return;
+	}
+	var date=new Date();
+	date.setTime(date.getTime()-10000);
+	document.cookie="User="+escape(name)+";expires="+date.toGMTString();
+}
+
+var getGameCookie = function(){
+	var strCookie = unescape(document.cookie);
+	if(!strCookie){
+		return false;
+	}
+	var get = [];
+	var arrget = strCookie.split("=")[1].split("_");
+	get["name"] = arrget[0];
+	if(arrget.length > 1){
+		get["level"] = arrget[1];
+	}else{
+		get["level"] = g_lev_max;
+	}
+	return get;
+}
+
+var init = function(){  //初始化
+	if(config.debug == "on"){
+		document.cookie = "test1=test;";
+		if(!document.cookie){  //不能cookie
+			document.getElementById("login").style.display = "none";
+			lev = 110;
+			u_lev_max = g_lev_max;
+			document.getElementById("main_window").style.display = "block";
+			load(lev);
+			return;
+		}
+		var exdate=new Date();
+		exdate.setDate(exdate.getDate()-1);
+		document.cookie = "test1=test;expires=" + exdate.toGMTString();
+	}
+	var get = getGameCookie();
+	console.log(get);
+	if(get){
+    document.getElementById("login").style.display = "none";
+		u_name = get["name"];
+		lev = get["level"];
+		u_lev_max = get["level"];
+		document.getElementById("main_window").style.display = "block";
+		load(lev);
+		document.getElementById("c_u").innerText = u_name[0];
+		document.getElementById("c_b").style.display = "block";
+	}else{
+		document.getElementById("login").style.display = "block";
+	}
+}();
+
+</script>
+</html>
